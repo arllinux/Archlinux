@@ -17,4 +17,19 @@ Installation de Samba-client
 
 Modifier l'apparence de Xfce
 
+
+RÉSOLU
 Pourquoi faut-il faire : source .bashrc dans root à chaque connexion ????
+Solution dans :
+https://bbs.archlinux.org/viewtopic.php?id=70910
+Il faut créer un fichier .bash_profile dans /root qui contienne :
+#
+# ~/.bash_profile
+#
+if [ -f ~/.bashrc ]; then
+			. /~.bashrc
+if
+Intégré dans les scritps du dépot git pour prochaine installation :-)
+FIN RÉSOLU
+
+
