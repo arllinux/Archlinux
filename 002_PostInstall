@@ -1,0 +1,124 @@
+# Après le redémarrage initial
+
+################################################################
+Note : L'utilisateur qui sera créé dans se tuto est "jpantinoux"
+################################################################
+
+Donc tout s'est bien passé et Grub etait bien configuré.
+
+Vous voilà devant l'invite de commande :
+virtualarch login :
+
+Nous tapons le mon d'utilisateur :
+virtualarch login : "root"
+Password :
+[root@virtualarch ~]#
+
+Vérification de la connection internet : 
+# ip address show
+Pas d'adress ip visible en face de enp0s3
+
+Pour se connecter il faut faire :
+# dhcpcd enp0s
+
+Pour activer DHCP sur toutes les interfaces réseaux: 
+# systemctl start dhcpcd
+
+Activer dhcp au redémarrage
+# systemctl enable dhcpcd
+
+
+1 - Utilisateurs
+################
+
+Vous pouvez ajouter un utilisateur à l'aide de la commande useradd :
+
+# useradd -g users -G users -m jpantinoux
+
+Voyons ce que la commandde useradd a créé de manière silencieuse :
+# cd /home
+# ls -lh
+drwx------ 2 jpantinoux users 4,0K 28 déc. 21:39 jpantinoux
+
+La commande est beaucoup moins laxiste que sur les distributions grand public :
+Seul l'utilisateur "jpantinoux" a tous les droits.
+Le groupe users n'a aucun droit
+Et le reste du monde non plus !
+
+Création du mot de passe :
+# passwd jpantinoux
+Nouveau mot de passe :
+Retapez le nouveau mot de passe :
+passwd: password updated successfully
+
+Vérifier à quel groupe appartient "jpantinoux"
+# groups jpantinoux
+users
+
+Groupes
+Ajouter les groupes utilisateur qui vont bien :
+# usermod -aG audio,log,lp,optical,scanner,storage,video jpantinoux
+Vérifications :
+# groups jpantinoux
+lp video storage users scanner audio log optical
+
+On a bien tous nos groupes y compris le groupe que l'on à créé précédemmant.
+
+2 - Installer le serveur graphique Xorg
+#######################################
+
+Pour voir votre carte graphique :
+# lspci
+VGA compatible controller: Innotek Systemberatung GmbH VirtualVox Graphics Adapter
+
+Attention ici nous installons sur une machine virtuelle.
+Sur une machine physique il aurait fallu aller chercher le pilote de la carte graphique avant de charger Xorg.
+Voir ici :
+https://wiki.archlinux.fr/Xorg#Configuration_de_la_carte_graphique
+
+L'installation minimale :
+# pacman -Syu xorg-server xorg-xinit
+puis installer un environnement de bureau 
+# pacman -S xfce4 xfce4-goodies
+
+Tester en lancant xorg en tant que root :
+Le premier lancement peut durer un bonne minute
+# startxfce4
+Ok
+
+Se déconnecter
+Si l'environnement de bureau se blocque, éteindre la machine
+
+Se connecter en utilisteur normal
+# su jpantinoux
+# startxfce4
+Passer au clavier français :
+Applications
+	Paramètres
+		Clavier
+			Rajouter le clavier français et supprimer anglais
+
+
+3 - Gestionnaire de connexions
+Installer lxdm
+# pacman -S lxdm
+
+Utilisation
+
+Crash à la seconde déconnexion
+Suite au passage à systemd, certains gestionnaires de connexion plantent lors de la deuxième déconnexion
+Pour résoudre ce problème, il suffit d'ajouter une ligne à la fin du fichier de configuration approprié.
+
+Par exemple pour LXDM:
+Fichier: /etc/pam.d/lxdm
+...
+session 	required 	pam_systemd.so
+
+puis activer lxde
+# systemctl enable lxde
+puis
+# systemctl start lxde
+Le gestionnaire se lance immédiatement.
+
+
+-- Fin --

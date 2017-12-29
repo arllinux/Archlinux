@@ -1,0 +1,289 @@
+# Au lancement on arrive sur un teminal qui est auto connecté.
+
+Note : j'utilise l'éditeur de texte vi, mais si vous avez
+l'habitude de nano il est installé aussi.
+
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+L'invite se présente sous cette forme :
+"root@archiso #"
+Ceci indique que l'on travaille à partir du CD ou de la clé
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+
+1 - Disposition du clavier :
+####~~~~~~~~~~~~~~~~~~~~####
+Pour changer l'agencement du clavier, utilisez la commande loadkeys (le clavier
+par défaut étant le clavier QWERTY, il faut taper "loqdkeys fr)pc" sur un clavier
+AZERTY pour écrire loadkeys fr-pc).
+
+# loadkeys fr-pc
+
+
+2 - Connexion au réseau
+####~~~~~~~~~~~~~~~####
+
+# ip address show
+
+Doit retourner une adresse du type : "enp0s3"
+inet 192.168.2.2
+
+Autrement, il vous faut configurer votre réseau en vous assurant d'abord
+d'avoir arrêté le service dhcpcd : 
+# systemctl stop dhcpcd.service
+# dhcpcd enpS03
+
+
+3 - Mise à jour de l'heure système
+####~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+# timedatectl
+System clock synchronized: no
+systemd-timesyncd.service active: no
+RTV in local TZ: no
+
+Il se peut que l'horloge nécessite d'être réglée. 
+# timedatectl set-ntp true
+System clock synchronized: yes
+systemd-timesyncd.service active: yes
+RTV in local TZ: no
+
+
+4 - Partitionnement des disques
+####~~~~~~~~~~~~~~~~~~~~~~~####
+Table de partitions "MS-DOS (MBR)"
+Dans cet exemple le disque virtuel fait 21G
+
+# cfdisk
+Select label type
+dos
+
+# /dev/sda1 pour le /boot		100M
+# /dev/sda2 pour la swap		Fonction de la RAM
+# /dev/sda3 pour le /				8G
+# /dev/sda4 pour le /home		Le reste du disque
+
+
+5 - Formatage des partitions
+####~~~~~~~~~~~~~~~~~~~~####
+
+# mkfs.ext2 /dev/sda1
+# mkfs.ext4 /dev/sda3
+# mkfs.ext4 /dev/sda4
+
+La swap est créée en utilisant mkswap : 
+# mkswap /dev/sda2
+
+
+6 - Montage des partitions
+####~~~~~~~~~~~~~~~~~~####
+Historiquement les points de montage manuel se font dans /mnt
+Nous allons créer la configuration de notre futur système dans
+le répertoire "/mnt de notre système live."
+
+# mount /dev/sda3 /mnt
+
+Pour créer le(s) dossier(s) utilisateur, il nous faut monter la partition /home
+# mkdir /mnt/home && mount /dev/sda4 /mnt/home
+
+Le swap doit également être activé pour être détecté lors de la création du fstab à suivre :
+# swapon /dev/sda2
+
+Si vous avez un /boot séparé, il faut aussi le monter :
+# mkdir /mnt/boot && mount /dev/sda1 /mnt/boot
+
+
+
+7 - Sélection des mirroirs pour installation  du système de base
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+Sélection du miroir
+Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
+# cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
+
+Editons maintenant le fichier backup.
+Nous allons décommenter TOUS les miroirs afin que rankmirrors puisse les tester.
+Pour se faire, sed s'avère très utile.
+# sed -s 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup
+
+Pour finir, nous allons laisser rankmirrors trouver les 10 meilleurs miroirs
+et écrire le résultat directement dans /etc/pacman.d/mirrorlist
+# rankmirrors -n 10 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+Pour ma part la commande est resté en attente : il a fallu que je la termine avec un "Ctrl + c"
+A priori tout à fonctionné correctement !
+
+
+
+8 - Installation des paquets de base
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécessaire à l'utilisation de AUR :
+(Arch User Repository est un dépôt communautaire auquel tous les utilisateurs d'Arch peuvent participer.)
+
+# pacstrap /mnt base base-devel
+
+
+
+9 - Configuration du système
+####~~~~~~~~~~~~~~~~~~~~####
+
+Un fichier fstab existe dans notre /mnt/etc/fstab.
+Pour voir ce qui est inscrit dans le fichier avant de lancer
+la commande qui va configurer les points de montage, éditez le fichier :
+# vi /mnt/etc/fstab
+
+Le fichier ne contient que l'entête :
+# Static information about the filesystems.
+# See fstab(5) for details.
+#
+# <file system>	<dir>	<type> <options>	<dump>	<pass>
+
+Générer le /mnt/etc/fstab
+
+# genfstab -U -p /mnt >> /mnt/etc/fstab
+
+On réédite le fichier nouvellement créé pour voir si tout est correct :
+# vi /mnt/etc/fstab
+
+Le fichier contient maintenant la configuration des partitions :
+# Static information about the filesystems.
+# See fstab(5) for details.
+
+# <file system> <dir> <type> <options> <dump> <pass>
+# /dev/sda3
+UUID=a23dfd1a-39e5-400f-ba57-c446ca606991	/         	ext4      	rw,relatime,data=ordered	0 1
+
+# /dev/sda4
+UUID=6e7efd15-ad90-4d5a-b280-26b24f6e9e79	/home     	ext4      	rw,relatime,data=ordered	0 2
+
+# /dev/sda1
+UUID=51a3be2d-3897-4d01-864c-3463035ee25b	/boot     	ext2      	rw,relatime,block_validity,barrier,user_xattr,acl	0 2
+
+# /dev/sda2
+UUID=48641d8a-f4c8-4de3-bdc1-08371f7d15a9	none      	swap      	defaults  	0 0
+
+
+
+10 - Chrooter dans le nouveau système :
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+# arch-chroot /mnt
+
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+A partir de maintenant l'invite se présente sous cette forme :
+"[root@archiso /] #"
+Ceci indique que l'on travaille dans le répertoire /mnt
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+
+
+11 - Réglages de base :
+####~~~~~~~~~~~~~~~####
+Notes :
+- Dans les instructions suivantes la machine locale sera nommée : "virtualarch"
+- La commande "echo" écrit la chaine de caractère dans la console
+- ">" envoie le résultat de "echo" dans le fichier spécifié en "écrasant" le contenu
+- ">>" envoie le résultat de "echo" dans le fichier spécifié "à la suite" le contenu
+
+
+Renseignez le nom de la machine dans le fichier /etc/hostname :
+# echo virtualarch > /etc/hostname
+
+Renseignez le nom de la machine dans le fichier /etc/hosts :
+
+# echo '127.0.1.1 virtualarch.virtualbox virtualarch' >> /etc/hosts
+
+Créez un lien symbolique /etc/localtime afin de choisir votre fuseau horaire, par exemple pour la France :
+
+# ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+Note : la commande m'a retourné :
+"ln: failed to créate symbolic link '/etc/localtime' : File exists"
+
+J'ai donc éliminé le fichier "/etc/localtime"
+# rm /etc/localtime
+puis j'ai renouvelé la commande :
+# ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
+Confirmation : 
+# readlink -f /etc/localtime
+/usr/share/zoneinfo/Europe/Paris
+
+Lien vers la solution :
+https://bbs.archlinux.org/viewtopic.php?id=222908
+
+Éditez le fichier /etc/locale.gen et décommentez votre locale,
+# vi /etc/locale.gen
+fr-FR.URF-8 UTF-8
+
+puis exécutez la commande suivante :
+# locale-gen
+Generating locales...
+	fr-FR.UTF-8... done
+Generation complete.
+
+Ajoutez le nom de la locale au fichier /etc/locale.conf (voir locale), par exemple pour le français en UTF-8 :
+
+# echo LANG="fr_FR.UTF-8" > /etc/locale.conf
+
+Vous pouvez spécifier la locale pour la session courante (ça évitera des messages d'alerte par la suite) avec la commande :
+
+# export LANG=fr_FR.UTF-8
+
+Éditez le fichier /etc/vconsole.conf afin d'y spécifier la disposition du clavier que vous souhaitez utiliser :
+
+# echo KEYMAP=fr > /etc/vconsole.conf
+
+Configurez /etc/mkinitcpio.conf et créez les RAMdisks initiaux avec :
+
+# mkinitcpio -p linux
+La commande doit se terminer par :
+==> Image generation successful
+
+Définissez un mot passe pour le root :
+				 
+# passwd
+
+
+
+12 - Installation d'un bootloader
+####~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+Installation
+# pacman -S grub
+
+Plus d'infos ici : https://wiki.archlinux.fr/GRUB
+
+Mise en place
+Pour l'installer sur le disque /dev/sda :
+# grub-install --target=i386-pc --no-floppy --recheck /dev/sda
+Installation pour la plate-forme i386-pc.
+Installation terminée, sans erreur.
+
+Générer le fichier de configuration principal
+# grub-mkconfig -o /boot/grub/grub.cfg
+Création du fichier de configutation GRUB
+Image Linux trouvée : /boot/vmlinuz-linux
+Found initrd images(s) in /boot: initramfs-linux.img
+Found fallback intird images(s) in /boot: initramfs-linux-fallback.img
+fait
+
+
+13 - Démonter le tout
+####~~~~~~~~~~~~~####
+
+Sortez de l'environnement chroot (exit ou Ctrl+D), puis :
+
+Attention à sortir de /mnt si vous êtes dedans sinon la commande retourne :
+(umount: /mnt: target is busy)
+
+# umount -R /mnt
+
+Éteindre l'ordinateur :
+
+# shutdown -h now
+
+Comme la procédur a été faite sur une machine virtuelle,
+la commande "reboot" relancerais l'image disque.
+C'est pourquoi une fois la machine éteinte il faut éjecter l'image disque.
+
+A ce niveau nous avons un système fonctionnel.
+La suite de la procédure dans : "002_Après_le_redémarrage"
+
+-- Fin --
