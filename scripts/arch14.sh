@@ -1,12 +1,11 @@
 #!/bin/bash
 #
-# mint17managerjp.sh
+# arch14manager.sh
 # 
-# script original (c) Niki Kovacs, 2014
-# Adapté par Jean-Pierre Antinoux - juin 2015
+# Jean-Pierre Antinoux - Décembre 2017
 
 CWD=$(pwd)
-WALXML="/usr/share/gnome-background-properties/"
+# WALXML="/usr/share/gnome-background-properties/"
 
 # Vérification de la syntaxe de l'utilisateur principal
 if [ $USER != "root" ]
@@ -26,6 +25,7 @@ if [ $USER != "root" ]
     # Configuration des invites de commandes
     echo ":: Configuration invite de commande pour l'administrateur."
     cat $CWD/../bash/invite_root > /root/.bashrc
+    cat $CWD/../bash/.bash_profile > /root/.bash_profile
     
     echo ":: Configuration invite de commande p our l'utilisateur courant."
     cat $CWD/../bash/invite_users > /home/$nom/.bashrc
@@ -35,8 +35,8 @@ if [ $USER != "root" ]
     
     # Configuration de Vim
     echo ":: Configuration de Vim."
-    cat $CWD/../vim/vimrc.local > /etc/vim/vimrc.local
-    chmod 0644 /etc/vim/vimrc.local
+    cat $CWD/../vim/vimrc > /etc/vimrc
+    chmod 0644 /etc/vimrc
     
     # Mise en place du bootsplash
     echo ":: Mise en place du bootsplash. ::"
@@ -49,63 +49,26 @@ if [ $USER != "root" ]
     update-grub
 
     # Ranger les fonds d'écran à leur place
-    mkdir /usr/share/backgrounds/linuxmint-perso
-    cd /usr/share/backgrounds/linuxmint-perso
+    mkdir /usr/share/backgrounds/xfce/linuxmint-perso
+    cd /usr/share/backgrounds/xfce/linuxmint-perso
     wget http://sloteur.free.fr/arllinux/fonds_arllinux.tar.gz
     tar xvzf fonds_arllinux.tar.gz
     rm fonds_arllinux.tar.gz
-    chmod 0644 /usr/share/backgrounds/linuxmint-perso/*.jpg
-    chown root:root /usr/share/backgrounds/linuxmint-perso/*.jpg
-    cp $CWD/../wallpaper/linuxmint-perso.xml $WALXML
-
-    # Ranger les icônes à leur place
-    echo ":: Installation des icônes supplémentaires."
-    if [ -d /usr/share/pixmaps ]; then
-      cp -f $CWD/../pixmaps/* /usr/share/pixmaps/
-    fi
-    
-    # Activer les polices Bitmap
-    echo ":: Activation des polices Bitmap."
-    if [ -h /etc/fonts/conf.d/70-no-bitmaps.conf ]; then
-    	rm -f /etc/fonts/conf.d/70-no-bitmaps.conf
-    	ln -s /etc/fonts/conf.avail/70-yes-bitmaps.conf /etc/fonts/conf.d/
-    	dpkg-reconfigure fontconfig
-    fi
-    
-    # Mettre en place le fichier qui permet la validation des messages
-    echo ":: Validation messages dpkg ::"
-    cat $CWD/../dpkg/local > /etc/apt/apt.conf.d/local
+    chmod 0644 /usr/share/backgrounds/xfce/linuxmint-perso/*.jpg
+    chown root:root /usr/share/backgrounds/xfce/linuxmint-perso/*.jpg
     
     # Recharger les informations et mettre à jour
-    apt-get update
-    apt-get -y dist-upgrade
+    yes | pacman -Syu
     
     # Suppression et ajout de paquets
     echo ":: Suppression de paquets. ::"
     CHOLESTEROL=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/cholesterol)
-    apt-get -y autoremove --purge $CHOLESTEROL
+    yes | pacman -Rsn  $CHOLESTEROL
     
     # Installer les paquets supplémentaires
     echo ":: Ajout de paquets. ::"
     PAQUETS=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/paquets+)
-    apt-get --assume-yes install $PAQUETS
-    
-    # Désactiver l'IPV6
-    echo ":: Désactivation de l'ipv6. ::"
-    cp /etc/sysctl.conf /etc/sysctl.conf_old
-    cat $CWD/../ipv4-6/etc/sysctl.conf > /etc/sysctl.conf
-    sysctl -p
-
-    # Polices TrueType Windows Vista & Eurostile
-    echo ":: Installation polices supplémentaires. ::"
-    cd /tmp
-    rm -rf /usr/share/fonts/truetype/{Eurostile,vista}
-    # wget -c http://www.microlinux.fr/download/Eurostile.zip
-    wget -c http://avi.alkalay.net/software/webcore-fonts/webcore-fonts-3.0.tar.gz
-    tar xvzf webcore-fonts-3.0.tar.gz
-    mv webcore-fonts/vista /usr/share/fonts/truetype/
-    # unzip Eurostile.zip -d /usr/share/fonts/truetype/
-    fc-cache -f -v
+    yes | pacman -S $PAQUETS
 
 echo ":: Réglages de base terminés - Redémarrage obligatoire ::"
     else

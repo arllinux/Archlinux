@@ -24,7 +24,8 @@ if [ $USER != "root" ]
     # Configuration des invites de commandes
     echo ":: Configuration invite de commande pour l'administrateur."
     cat $CWD/../bash/invite_root > /root/.bashrc
-    
+    cat $CWD/../bash/.bash_profile > /root/.bash_profile
+     
     echo ":: Configuration invite de commande p our l'utilisateur courant."
     cat $CWD/../bash/invite_users > /home/$nom/.bashrc
     
@@ -33,7 +34,7 @@ if [ $USER != "root" ]
     
     # Configuration de Vim
     echo ":: Configuration de Vim."
-    cat $CWD/../vim/vimrc.local > /etc/vimrc
+    cat $CWD/../vim/vimrc > /etc/vimrc
     chmod 0644 /etc/vimrc
     echo ":: Réglages de base terminés :"
     
