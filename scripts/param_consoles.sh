@@ -33,8 +33,8 @@ if [ $USER != "root" ]
     
     # Configuration de Vim
     echo ":: Configuration de Vim."
-    cat $CWD/../vim/vimrc.local > /etc/vim/vimrc
-    chmod 0644 /etc/vim/vimrc
+    cat $CWD/../vim/vimrc.local > /etc/vimrc
+    chmod 0644 /etc/vimrc
     echo ":: Réglages de base terminés :"
     
       else
