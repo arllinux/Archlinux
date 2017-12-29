@@ -43,34 +43,33 @@ if [ $USER != "root" ]
     cp $CWD/../bootsplash/wwl.tga /boot/grub/
    
     # Configurer grub
-    echo ":: Configuration de /etc/default/grub. ::"
-    cp /etc/default/grub /etc/default/grub_old
-    cat $CWD/../grub/etc/default/grub_800x600 > /etc/default/grub
-    update-grub
+    # echo ":: Configuration de /etc/default/grub. ::"
+    # cp /etc/default/grub /etc/default/grub_old
+    # cat $CWD/../grub/etc/default/grub_800x600 > /etc/default/grub
+    # update-grub
 
     # Ranger les fonds d'écran à leur place
-    mkdir /usr/share/backgrounds/xfce/linuxmint-perso
-    cd /usr/share/backgrounds/xfce/linuxmint-perso
+    cd /usr/share/backgrounds/xfce/
     wget http://sloteur.free.fr/arllinux/fonds_arllinux.tar.gz
     tar xvzf fonds_arllinux.tar.gz
     rm fonds_arllinux.tar.gz
-    chmod 0644 /usr/share/backgrounds/xfce/linuxmint-perso/*.jpg
-    chown root:root /usr/share/backgrounds/xfce/linuxmint-perso/*.jpg
+    chmod 0644 /usr/share/backgrounds/xfce/*.jpg
+    chown root:root /usr/share/backgrounds/xfce/*.jpg
     
     # Recharger les informations et mettre à jour
     yes | pacman -Syu
     
     # Suppression et ajout de paquets
-    echo ":: Suppression de paquets. ::"
-    CHOLESTEROL=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/cholesterol)
-    yes | pacman -Rsn  $CHOLESTEROL
+    # echo ":: Suppression de paquets. ::"
+    # CHOLESTEROL=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/cholesterol)
+    # yes | pacman -Rsn  $CHOLESTEROL
     
     # Installer les paquets supplémentaires
     echo ":: Ajout de paquets. ::"
     PAQUETS=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/paquets+)
-    yes | pacman -S $PAQUETS
+    pacman -S $PAQUETS
 
-echo ":: Réglages de base terminés - Redémarrage obligatoire ::"
+echo ":: Réglages de base terminés ::"
     else
        echo "Ce nom d'utilisateur n'existe pas. Réessayez !"
     fi
