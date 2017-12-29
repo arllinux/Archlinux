@@ -1,0 +1,12 @@
+Il suffit de mettre à jour les dépôts et d'installer l'un des deux paquets
+LibreOffice disponibles:
+
+libreoffice-fresh est la branche de développement avec de nouvelles
+caractéristiques et améliorations.
+libreoffice-still est la branche principale et maintenue.
+
+N'oubliez pas d'installer la localisation française correspondante pour
+passer en français:
+
+libreoffice-fresh-fr
+libreoffice-still-fr
