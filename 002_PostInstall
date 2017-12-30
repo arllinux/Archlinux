@@ -43,7 +43,7 @@ Activer dhcp au redémarrage
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # pacman -Syu
-
+# pacman -S wget
 
 
 
