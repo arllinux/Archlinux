@@ -9,10 +9,17 @@ Donc tout s'est bien passé et Grub etait bien configuré.
 Vous voilà devant l'invite de commande :
 virtualarch login :
 
+1 - Se connecter
+####~~~~~~~~~~~~#### 
+
 Nous tapons le mon d'utilisateur :
 virtualarch login : "root"
 Password :
 [root@virtualarch ~]#
+
+
+2 - Vérifier si le service réseau fonctionne
+####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#### 
 
 Vérification de la connection internet : 
 # ip address show
@@ -27,7 +34,18 @@ Pour activer DHCP sur toutes les interfaces réseaux:
 Activer dhcp au redémarrage
 # systemctl enable dhcpcd
 
-Réglage du son
+
+3 - Installer le NetworkManager
+####~~~~~~~~~~~~~~~~~~~~~~~#### 
+
+# pacman -S networkmanager
+# systemctl enable NetworkManager.service
+
+4 - Réglage du son
+####~~~~~~~~~~####
+
+# pacman -S alsa-utils alsa-oss
+
 # alsamixer
 Mettez les 2 premières colonnes au max :
 Si le pied de colonne colorée contient un "M", pressez une fois la touche "m"
@@ -41,9 +59,32 @@ Test du son
 Une fois le son correctement réglé :
 # alasctl store
 
+5 - Installer le serveur graphique Xorg
+###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
+# yaourt -S xorg-server xorg-xinit xorg-xmessage xf86-input-mouse
+:: Il y a 3 fournisseurs disponibles pour libgl :
+:: Dépôt extra
+   1) libflvnd   2) nvidia-304xx-utils   3) nvidia-340xx-utils
 
-1 - Utilisateurs
+Entrer un nombre (par défaut, 1 est séléctionné) :
+
+6 - VirtualBox
+####~~~~~~####
+
+Si vous installez une ArchLinux dans une machine virtuelle VirtualBox,
+vous aurez une étape complémentaire pour que Xorg fonctionne correctement.
+D'abord installer le paquet virtualbox-guest-utils ou virtualbox-guest-utils-lts
+(si vous utilisez un noyau LTS).
+# yaourt -S linux-headers
+# yaourt -S virtualbox-guest-utils
+
+Ensuite, il faut créer un fichier /etc/modules-load.d/vbox.conf qui contient les lignes suivantes :
+vboxguest
+vboxvideo
+vboxsfnet
+
+7 - Utilisateurs
 ################
 
 Vous pouvez ajouter un utilisateur à l'aide de la commande useradd :
@@ -79,22 +120,36 @@ lp video storage users scanner audio log optical
 
 On a bien tous nos groupes y compris le groupe que l'on à créé précédemmant.
 
+Installation de la couche intermédiaire
+=======================================
+
+Dans cette partie, on va rajouter quelques outils qui sont bien pratiques.
+Première couche, les greffons gstreamert
+# yaourt -S gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
+
+On va ensuite rajouter des outils comme ntp, gimp, cups ou encore hplip
+(bien pratique si vous avez une imprimante Hewlett Packard), xsane et unocov
+# yaourt -S cups gimp hplip ntp xsane
+
+Vous voulez LibreOffice et sa traduction française ?
+# yaourt -S libreoffice libreoffice-fr
+
+Pour Mozilla Firefox et sa traduction
+# yaourt -S firefox-i18n-fr
+
+Maintenant que la plus grosse partie de notre logithèque commune est installée,
+nous allons activer les services communs à tous les environnements.
+
+# systemctl enable avahi-daemon.service
+# systemctl enable avahi-dnsconfd.service
+# systemctl enable ntpd.service
+
+|||||||||||||||||||||||||||||||||||||||||
 2 - Installer le serveur graphique Xorg
 #######################################
+Installer Xfce
+# yaourt -S xfce4 xfce4-goodies vlc xnoise lightdm gvfs
 
-Pour voir votre carte graphique :
-# lspci
-VGA compatible controller: Innotek Systemberatung GmbH VirtualVox Graphics Adapter
-
-Attention ici nous installons sur une machine virtuelle.
-Sur une machine physique il aurait fallu aller chercher le pilote de la carte graphique avant de charger Xorg.
-Voir ici :
-https://wiki.archlinux.fr/Xorg#Configuration_de_la_carte_graphique
-
-L'installation minimale :
-# pacman -Syu xorg-server xorg-xinit
-puis installer un environnement de bureau 
-# pacman -S xfce4 xfce4-goodies
 
 Tester en lancant xorg en tant que root :
 Le premier lancement peut durer un bonne minute

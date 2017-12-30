@@ -94,13 +94,9 @@ Si vous avez un /boot séparé, il faut aussi le monter :
 # mkdir /mnt/boot && mount /dev/sda1 /mnt/boot
 
 
-
 7 - Sélection des mirroirs pour installation  du système de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
-###########################################################
-#### Automatisé par le script 01_mirroirs du dépot git ####
-###########################################################
 
 Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
@@ -114,8 +110,8 @@ Pour se faire, sed s'avère très utile.
 Pour finir, nous allons laisser rankmirrors trouver les 10 meilleurs miroirs
 et écrire le résultat directement dans /etc/pacman.d/mirrorlist
 # rankmirrors -n 10 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
-Pour ma part la commande est resté en attente : il a fallu que je la termine avec un "Ctrl + c"
-A priori tout à fonctionné correctement !
+
+L'attente peut durer jusqu'a 5 minutes ou plus. Gardez votre calme...
 
 
 
@@ -127,13 +123,6 @@ Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécess
 # pacstrap /mnt base base-devel
 
 
-Note 2 : Pour récupérer la documentation et utiliser les scripts,
-il faut installer git :
-# pacstrap /mnt git vim
-(j'ai rajouté vim puisqu'on y est :)
-
-Ensuite :
-# git clone https://github.com/arllinux/archlinux
 
 
 
@@ -204,6 +193,25 @@ Notes :
 - ">" envoie le résultat de "echo" dans le fichier spécifié en "écrasant" le contenu
 - ">>" envoie le résultat de "echo" dans le fichier spécifié "à la suite" le contenu
 
+Note 2 : Pour récupérer la documentation et utiliser les scripts,
+il faut installer git :
+# pacman -S git vim
+(j'ai rajouté vim puisqu'on y est :)
+
+D'abbord
+# git clone https://github.com/arllinux/archlinux
+
+Pour un peu plus de confort :
+1 : # cd archlinux/scripts
+2 : # ./000_config_git.sh
+3 : # ./param.consoles.sh
+Après l'exécution de param.consoles.sh, taper la commande "cd"
+pour revenir dans le répertoire de root.
+Pour activer la coloration :
+# source .bashrc
+# cd archlinux/scripts
+4 : # ./03_adjustInit.sh
+
 #############################################################
 #### Automatisé par le script 03_adjustInit du dépot git ####
 #############################################################
@@ -261,18 +269,9 @@ KEYMAP=fr-latin9
 FONT=latin9w-16
 _VCONSOLEconf_
 
-
-NetworkManager
-# pacman -S networkmanager
-# systemctl enable NetworkManager.service
-
-
-
 #########################################################
 #### Fin de l'automatisation du script 03_adjustInit ####
 #########################################################
-
-
 
 Configurez /etc/mkinitcpio.conf et créez les RAMdisks initiaux avec :
 
@@ -334,5 +333,9 @@ C'est pourquoi une fois la machine éteinte il faut éjecter l'image disque.
 
 A ce niveau nous avons un système fonctionnel.
 La suite de la procédure dans : "002_PostInstall"
+
+NetworkManager
+# pacman -S networkmanager
+# systemctl enable NetworkManager.service
 
 -- Fin --
