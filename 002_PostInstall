@@ -89,6 +89,35 @@ Ok
 Se déconnecter
 Si l'environnement de bureau se blocque, éteindre la machine
 
+
+Fichier de démarrage ~/.xinitrc
+Pour votre utilisateur vous aurez besoin de recopier ce fichier dans son HOME et de le modifier:
+
+# cp /etc/X11/xinit/xinitrc ~/.xinitrc
+Le principe est simple, il suffit de conserver l'ensemble de son contenu et de commenter
+ou supprimer les lignes suivants twm jusqu'à la fin puis de rajouter ce dont vous avez besoin en dernier.
+Par exemple :
+
+Fichier: ~/.xinitrc
+
+(...)
+
+# start some nice programs
+#
+if [ -d /etc/X11/xinit/xinitrc.d ] ; then
+for f in /etc/X11/xinit/xinitrc.d/?*.sh ; do
+ [ -x "$f" ] && . "$f"
+  done
+  unset f
+fi
+
+#twm &
+#xclock -geometry 50x50-1+1 &
+#xterm -geometry 80x50+494+51 &
+#xterm -geometry 80x20+494-0 &
+#exec xterm -geometry 80x66+0+0 -name login
+exec startxfce4-session
+
 Se connecter en utilisteur normal
 # su jpantinoux
 # startxfce4
@@ -115,9 +144,9 @@ Fichier: /etc/pam.d/lxdm
 session 	required 	pam_systemd.so
 
 puis activer lxde
-# systemctl enable lxde
+# systemctl enable lxdm
 puis
-# systemctl start lxde
+# systemctl start lxdm
 Le gestionnaire se lance immédiatement.
 
 

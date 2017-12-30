@@ -3,14 +3,6 @@
 Note : j'utilise l'éditeur de texte vi, mais si vous avez
 l'habitude de nano il est installé aussi.
 
-Note 2 : Pour récupérer la documentation et utiliser les scripts,
-il faut installer git :
-# pacman -S git vim
-(j'ai rajouté vim puisqu'on y est :)
-
-Ensuite :
-# git clone https://github.com/arllinux/archlinux
-
 
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 L'invite se présente sous cette forme :
@@ -133,6 +125,15 @@ Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécess
 (Arch User Repository est un dépôt communautaire auquel tous les utilisateurs d'Arch peuvent participer.)
 
 # pacstrap /mnt base base-devel
+
+
+Note 2 : Pour récupérer la documentation et utiliser les scripts,
+il faut installer git :
+# pacstrap /mnt git vim
+(j'ai rajouté vim puisqu'on y est :)
+
+Ensuite :
+# git clone https://github.com/arllinux/archlinux
 
 
 
@@ -308,7 +309,7 @@ Attention à sortir de /mnt si vous êtes dedans sinon la commande retourne :
 
 # shutdown -h now
 
-Comme la procédur a été faite sur une machine virtuelle,
+Comme la procédure a été faite sur une machine virtuelle,
 la commande "reboot" relancerais l'image disque.
 C'est pourquoi une fois la machine éteinte il faut éjecter l'image disque.
 
