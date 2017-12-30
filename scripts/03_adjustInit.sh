@@ -29,10 +29,10 @@ echo LANG="fr_FR.UTF-8" > /etc/locale.conf
 export LANG=fr_FR.UTF-8
 
 # Indiquez la disposition du clavier dans le fichier vconsole.conf
-echo KEYMAP=fr /etc/vconsole.conf
+echo KEYMAP=fr > /etc/vconsole.conf
 
 # Ajout du dépot pour yaourt
-cp /etc/pacman.conf pacman.conf.backup
+cp /etc/pacman.conf /etc/pacman.conf.backup
 cat >> /etc/pacman.conf << _PACMANconf_
 
 [archlinuxfr]
