@@ -34,6 +34,13 @@ KEYMAP=fr-latin9
 FONT=latin9w-16
 _VCONSOLEconf_
 
+# Ajout du d�pot pour yaourt
+# cat > /etc/pacman.conf << _PACMANconf_
+# [archlinuxfr]
+# SigLevel = Optional TrustAll
+# Server = http://repo.archlinux.fr/$arch
+#_PACMANconf_
+
 # Sélectionner le fuseau horaire Europe/Paris
 read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 	if [ $fuseau = "o" ]
@@ -44,4 +51,15 @@ read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 			echo ":: Le fuseau horaire doit être configuré manuellement, désolé...
 			::"
 		fi
+# Ajout du NetworkNanager
+read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
+	if [ $nm = "o" ]
+		then
+			pacman -S networkmanager
+			systemctl enable NetworkManager.service
+	   	echo ":: Le NetworkNanager est en route ::"
+		else
+		  echo ":: Vous avez choisi de ne pas installeir le NetworkNanager ::"
+	fi
+
 exit 0
