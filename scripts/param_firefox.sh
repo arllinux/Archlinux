@@ -21,7 +21,7 @@ CWD=$(pwd)
 				wget http://sloteur.free.fr/param_mf/mozilla.tar.gz
 				tar xvf mozilla.tar.gz
 				rm mozilla.tar.gz
-				chown -R $nom:$nom /home/$nom/.mozilla
+				chown -R $nom:users /home/$nom/.mozilla
     else
        echo "Ce nom d'utilisateur n'existe pas. Réessayez !"
     fi

@@ -20,7 +20,7 @@ CWD=$(pwd)
 				wget http://sloteur.free.fr/arllinux/cairo-dock-jp.tar.gz
 				tar xvf cairo-dock-jp.tar.gz
 				rm cairo-dock-jp.tar.gz
-				chown -R $nom:$nom /home/$nom/.config/cairo-dock
+				chown -R $nom:users /home/$nom/.config/cairo-dock
     else
        echo "Ce nom d'utilisateur n'existe pas. Réessayez !"
     fi
