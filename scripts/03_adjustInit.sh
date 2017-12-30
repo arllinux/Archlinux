@@ -29,17 +29,16 @@ echo LANG="fr_FR.UTF-8" > /etc/locale.conf
 export LANG=fr_FR.UTF-8
 
 # Indiquez la disposition du clavier dans le fichier vconsole.conf
-cat > /etc/vconsole.conf << _VCONSOLEconf_
-KEYMAP=fr-latin9
-FONT=latin9w-16
-_VCONSOLEconf_
+echo KEYMAP=fr /etc/vconsole.conf
 
 # Ajout du dépot pour yaourt
 cp /etc/pacman.conf pacman.conf.backup
 cat >> /etc/pacman.conf << _PACMANconf_
+
 [archlinuxfr]
 SigLevel = Optional TrustAll
 Server = http://repo.archlinux.fr/x86_64
+
 _PACMANconf_
 
 # Sélectionner le fuseau horaire Europe/Paris
@@ -53,15 +52,15 @@ read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 			::"
 		fi
 # Ajout du NetworkNanager
-read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
-	if [ $nm = "o" ]
-		then
-			pacman -S networkmanager
-			systemctl enable NetworkManager.service
-	   	echo ":: Le NetworkNanager est en route ::"
-		else
-		  echo ":: Vous avez choisi de ne pas installeir le NetworkNanager ::"
-	fi
+#read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
+#	if [ $nm = "o" ]
+#		then
+#			pacman -S networkmanager
+#			systemctl enable NetworkManager.service
+#	   	echo ":: Le NetworkNanager est en route ::"
+#		else
+#		  echo ":: Vous avez choisi de ne pas installeir le NetworkNanager ::"
+#	fi
 
 exit 0
 
