@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# param_consoles.sh
+# consoles.sh
 # 
 # Jean-Pierre Antinoux - Décembre 2017
 
@@ -16,6 +16,9 @@ if [ $USER != "root" ]
     cat $CWD/../bash/invite_root > /root/.bashrc
     cat $CWD/../bash/.bash_profile > /root/.bash_profile
      
+    echo ":: Configuration invite de commande pour les futurs utilisateurs."
+    cat $CWD/../bash/invite_users > /etc/skel/.bashrc
+    
     # Configuration de Vim
     echo ":: Configuration de Vim."
     cat $CWD/../vim/vimrc > /etc/vimrc

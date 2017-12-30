@@ -9,16 +9,15 @@ read -p 'Nom de la machine : (ex : poste1 ou gaston) : ' namecomputer
 
 # Renseigner un nom pour le résau
 read -p 'Nom du réseau local : (ex : monreseau ou maison) : ' namereseau
-# echo $namecomputer.$namereseau $namecomputer 
 
 # Inscrire le nom de la machine dans le fichier hostname
-#echo $namecomputer > /mnt/etc/hostname
+echo $namecomputer > /etc/hostname
 
 # Inscrire le nom de la machine et du réseau dans le fichier hosts
 echo 127.0.1.1 $namecomputer.$namereseau $namecomputer >> /etc/hosts
 
 # Décommenter la locale "fr_FR.UTF-8 UTF-8" dans le fichier locale.gen
-sed -i -e s/\#fr\_FR.UTF\-8\ UTF\-8/ fr\_FR.UTF\-8\ UTF\-8/g /etc/locale.gen
+sed -i -e "s/\#fr\_FR.UTF\-8\ UTF\-8/ fr\_FR.UTF\-8\ UTF\-8/g" /etc/locale.gen
 
 # Exécuter la commande locale-gen				
 locale-gen
@@ -30,7 +29,17 @@ echo LANG="fr_FR.UTF-8" > /etc/locale.conf
 export LANG=fr_FR.UTF-8
 
 # Indiquez la disposition du clavier dans le fichier vconsole.conf
-echo KEYMAP=fr > /etc/vconsole.conf
+cat > /etc/vconsole.conf << _VCONSOLEconf_
+KEYMAP=fr-latin9
+FONT=latin9w-16
+_VCONSOLEconf_
+
+# Ajout du d�pot pour yaourt
+# cat > /etc/pacman.conf << _PACMANconf_
+# [archlinuxfr]
+# SigLevel = Optional TrustAll
+# Server = http://repo.archlinux.fr/$arch
+#_PACMANconf_
 
 # Sélectionner le fuseau horaire Europe/Paris
 read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
@@ -42,4 +51,15 @@ read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 			echo ":: Le fuseau horaire doit être configuré manuellement, désolé...
 			::"
 		fi
+# Ajout du NetworkNanager
+read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
+	if [ $nm = "o" ]
+		then
+			pacman -S networkmanager
+			systemctl enable NetworkManager.service
+	   	echo ":: Le NetworkNanager est en route ::"
+		else
+		  echo ":: Vous avez choisi de ne pas installeir le NetworkNanager ::"
+	fi
+
 exit 0
