@@ -39,8 +39,8 @@ if [ $USER != "root" ]
     chmod 0644 /etc/vimrc
     
     # Mise en place du bootsplash
-    echo ":: Mise en place du bootsplash. ::"
-    cp $CWD/../bootsplash/wwl.tga /boot/grub/
+    # echo ":: Mise en place du bootsplash. ::"
+    # cp $CWD/../bootsplash/wwl.tga /boot/grub/
    
     # Configurer grub
     # echo ":: Configuration de /etc/default/grub. ::"

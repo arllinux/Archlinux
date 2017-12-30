@@ -3,9 +3,19 @@
 Note : j'utilise l'éditeur de texte vi, mais si vous avez
 l'habitude de nano il est installé aussi.
 
+Note 2 : Pour récupérer la documentation et utiliser les scripts,
+il faut installer git :
+# pacman -S git vim
+(j'ai rajouté vim puisqu'on y est :)
+
+Ensuite :
+# git clone https://github.com/arllinux/archlinux
+
+
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 L'invite se présente sous cette forme :
 "root@archiso #"
+Il n'y a pas les crochets qui encadre l'invite [ ]
 Ceci indique que l'on travaille à partir du CD ou de la clé
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
@@ -55,7 +65,7 @@ Dans cet exemple le disque virtuel fait 21G
 
 # cfdisk
 Select label type
-dos
+"dos"
 
 # /dev/sda1 pour le /boot		100M
 # /dev/sda2 pour la swap		Fonction de la RAM
@@ -85,7 +95,7 @@ le répertoire "/mnt de notre système live."
 Pour créer le(s) dossier(s) utilisateur, il nous faut monter la partition /home
 # mkdir /mnt/home && mount /dev/sda4 /mnt/home
 
-Le swap doit également être activé pour être détecté lors de la création du fstab à suivre :
+"Le swap doit également être activé" pour être détecté lors de la création du fstab à suivre :
 # swapon /dev/sda2
 
 Si vous avez un /boot séparé, il faut aussi le monter :
@@ -95,6 +105,10 @@ Si vous avez un /boot séparé, il faut aussi le monter :
 
 7 - Sélection des mirroirs pour installation  du système de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
+
+###########################################################
+#### Automatisé par le script 01_mirroirs du dépot git ####
+###########################################################
 
 Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
@@ -125,6 +139,9 @@ Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécess
 9 - Configuration du système
 ####~~~~~~~~~~~~~~~~~~~~####
 
+###########################################################
+#### Automatisé par le script 02_genfstab du dépot git ####
+###########################################################
 Un fichier fstab existe dans notre /mnt/etc/fstab.
 Pour voir ce qui est inscrit dans le fichier avant de lancer
 la commande qui va configurer les points de montage, éditez le fichier :
@@ -160,6 +177,9 @@ UUID=51a3be2d-3897-4d01-864c-3463035ee25b	/boot     	ext2      	rw,relatime,bloc
 # /dev/sda2
 UUID=48641d8a-f4c8-4de3-bdc1-08371f7d15a9	none      	swap      	defaults  	0 0
 
+#######################################################
+#### Fin de l'automatisation du script 02_genfstab ####
+#######################################################
 
 
 10 - Chrooter dans le nouveau système :
@@ -183,6 +203,9 @@ Notes :
 - ">" envoie le résultat de "echo" dans le fichier spécifié en "écrasant" le contenu
 - ">>" envoie le résultat de "echo" dans le fichier spécifié "à la suite" le contenu
 
+#############################################################
+#### Automatisé par le script 03_adjustInit du dépot git ####
+#############################################################
 
 Renseignez le nom de la machine dans le fichier /etc/hostname :
 # echo virtualarch > /etc/hostname
@@ -229,6 +252,12 @@ Vous pouvez spécifier la locale pour la session courante (ça évitera des mess
 Éditez le fichier /etc/vconsole.conf afin d'y spécifier la disposition du clavier que vous souhaitez utiliser :
 
 # echo KEYMAP=fr > /etc/vconsole.conf
+
+#########################################################
+#### Fin de l'automatisation du script 03_adjustInit ####
+#########################################################
+
+
 
 Configurez /etc/mkinitcpio.conf et créez les RAMdisks initiaux avec :
 
