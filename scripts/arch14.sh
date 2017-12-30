@@ -65,9 +65,9 @@ if [ $USER != "root" ]
     # yes | pacman -Rsn  $CHOLESTEROL
     
     # Installer les paquets supplémentaires
-    echo ":: Ajout de paquets. ::"
-    PAQUETS=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/paquets+)
-    pacman -S $PAQUETS
+    # echo ":: Ajout de paquets. ::"
+    # PAQUETS=$(egrep -v '(^\#)|(^\s+$)' $CWD/../pkglists/paquets+)
+    # pacman -S $PAQUETS
 
 echo ":: Réglages de base terminés ::"
     else
