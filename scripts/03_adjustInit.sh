@@ -34,14 +34,15 @@ KEYMAP=fr-latin9
 FONT=latin9w-16
 _VCONSOLEconf_
 
-# Ajout du dÃpot pour yaourt
-# cat > /etc/pacman.conf << _PACMANconf_
-# [archlinuxfr]
-# SigLevel = Optional TrustAll
-# Server = http://repo.archlinux.fr/$arch
-#_PACMANconf_
+# Ajout du dépot pour yaourt
+cp /etc/pacman.conf pacman.conf.backup
+cat >> /etc/pacman.conf << _PACMANconf_
+[archlinuxfr]
+SigLevel = Optional TrustAll
+Server = http://repo.archlinux.fr/x86_64
+_PACMANconf_
 
-# SÃ©lectionner le fuseau horaire Europe/Paris
+# Sélectionner le fuseau horaire Europe/Paris
 read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 	if [ $fuseau = "o" ]
 		then
@@ -63,3 +64,4 @@ read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
 	fi
 
 exit 0
+
