@@ -10,7 +10,7 @@ Vous voilà devant l'invite de commande :
 virtualarch login :
 
 1 - Se connecter
-####~~~~~~~~~~~~#### 
+#~~~~~~~~~~~~~~#
 
 Nous tapons le mon d'utilisateur :
 virtualarch login : "root"
@@ -18,8 +18,10 @@ Password :
 [root@virtualarch ~]#
 
 
+
+
 2 - Vérifier si le service réseau fonctionne
-####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#### 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 Vérification de la connection internet : 
 # ip address show
@@ -35,14 +37,35 @@ Activer dhcp au redémarrage
 # systemctl enable dhcpcd
 
 
+
+
+3 - Première sychonisation des dépots
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# pacman -Syu
+
+
+
+
 3 - Installer le NetworkManager
-####~~~~~~~~~~~~~~~~~~~~~~~#### 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # pacman -S networkmanager
 # systemctl enable NetworkManager.service
 
-4 - Réglage du son
-####~~~~~~~~~~####
+
+
+
+4 - Installer "yaourt" pour gérer les dépots AUR
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# pacman -S yaourt
+
+
+
+
+5 - Réglage du son
+#~~~~~~~~~~~~~~~~#
 
 # pacman -S alsa-utils alsa-oss
 
@@ -59,33 +82,22 @@ Test du son
 Une fois le son correctement réglé :
 # alasctl store
 
-5 - Installer le serveur graphique Xorg
-###~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
-# yaourt -S xorg-server xorg-xinit xorg-xmessage xf86-input-mouse
+
+
+6 - Installer le serveur graphique Xorg
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# yaourt -S xorg-server xorg-xinit
 :: Il y a 3 fournisseurs disponibles pour libgl :
 :: Dépôt extra
    1) libflvnd   2) nvidia-304xx-utils   3) nvidia-340xx-utils
 
 Entrer un nombre (par défaut, 1 est séléctionné) :
 
-6 - VirtualBox
-####~~~~~~####
 
-Si vous installez une ArchLinux dans une machine virtuelle VirtualBox,
-vous aurez une étape complémentaire pour que Xorg fonctionne correctement.
-D'abord installer le paquet virtualbox-guest-utils ou virtualbox-guest-utils-lts
-(si vous utilisez un noyau LTS).
-# yaourt -S linux-headers
-# yaourt -S virtualbox-guest-utils
-
-Ensuite, il faut créer un fichier /etc/modules-load.d/vbox.conf qui contient les lignes suivantes :
-vboxguest
-vboxvideo
-vboxsfnet
-
-7 - Utilisateurs
-################
+Utilisateurs
+#==========#
 
 Vous pouvez ajouter un utilisateur à l'aide de la commande useradd :
 
@@ -120,38 +132,16 @@ lp video storage users scanner audio log optical
 
 On a bien tous nos groupes y compris le groupe que l'on à créé précédemmant.
 
-Installation de la couche intermédiaire
-=======================================
 
-Dans cette partie, on va rajouter quelques outils qui sont bien pratiques.
-Première couche, les greffons gstreamert
-# yaourt -S gst-plugins-base gst-plugins-good gst-plugins-bad gst-plugins-ugly
 
-On va ensuite rajouter des outils comme ntp, gimp, cups ou encore hplip
-(bien pratique si vous avez une imprimante Hewlett Packard), xsane et unocov
-# yaourt -S cups gimp hplip ntp xsane
 
-Vous voulez LibreOffice et sa traduction française ?
-# yaourt -S libreoffice libreoffice-fr
-
-Pour Mozilla Firefox et sa traduction
-# yaourt -S firefox-i18n-fr
-
-Maintenant que la plus grosse partie de notre logithèque commune est installée,
-nous allons activer les services communs à tous les environnements.
-
-# systemctl enable avahi-daemon.service
-# systemctl enable avahi-dnsconfd.service
-# systemctl enable ntpd.service
-
-|||||||||||||||||||||||||||||||||||||||||
-2 - Installer le serveur graphique Xorg
-#######################################
+7 - Installer l'environement de bureau xfce4
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 Installer Xfce
-# yaourt -S xfce4 xfce4-goodies vlc xnoise lightdm gvfs
+# yaourt -S xfce4 xfce4-goodies gvfs
 
-
-Tester en lancant xorg en tant que root :
+"Tester en tant que root"
+Tester en lancant xorg en tant que "root" :
 Le premier lancement peut durer un bonne minute
 # startxfce4
 Ok
@@ -159,9 +149,12 @@ Ok
 Se déconnecter
 Si l'environnement de bureau se blocque, éteindre la machine
 
+"Tester en tant qu'utilisateur normal"
 
-Fichier de démarrage ~/.xinitrc
-Pour votre utilisateur vous aurez besoin de recopier ce fichier dans son HOME et de le modifier:
+Avant de lancer un utilisateur normal
+Pour votre utilisateur vous aurez besoin de recopier ce fichier dans son "/home" et de le modifier:
+
+"Fichier de démarrage ~/.xinitrc"
 
 # cp /etc/X11/xinit/xinitrc ~/.xinitrc
 Le principe est simple, il suffit de conserver l'ensemble de son contenu et de commenter
@@ -169,9 +162,7 @@ ou supprimer les lignes suivants twm jusqu'à la fin puis de rajouter ce dont vo
 Par exemple :
 
 Fichier: ~/.xinitrc
-
 (...)
-
 # start some nice programs
 #
 if [ -d /etc/X11/xinit/xinitrc.d ] ; then
@@ -187,37 +178,65 @@ fi
 #xterm -geometry 80x20+494-0 &
 #exec xterm -geometry 80x66+0+0 -name login
 exec startxfce4-session
+(Fin de Fichier: ~/.xinitrc)
+
 
 Se connecter en utilisteur normal
 # su jpantinoux
 # startxfce4
-Passer au clavier français :
-Applications
-	Paramètres
-		Clavier
-			Rajouter le clavier français et supprimer anglais
-
+Ok
+Se déconnecter
 
 3 - Gestionnaire de connexions
 Installer lxdm
 # pacman -S lxdm
 
-Utilisation
+
+puis activer lxde
+# systemctl start lxdm
+Le gestionnaire se lance immédiatement.
+
+Une fois arrivé sur le bureau, il faut impérativement car le bureau est en clavier anglais :
+Applications
+	Paramètres
+		Clavier
+
+		Onglet : Disposition
+			Décocher : Utiliser les paramètre par défaut
+			Bouton : Ajouter
+			Français -> azerty
+				Sélectionner : Anglais
+				Bouton : Supprimer
+
+				Bouton : Fermer
+
+
+
+
+8 - Activer lxdm au démarrage
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+Lancer un terminal graphique et passer en root :
+# systemctl enable lxdm
+
+Pour terminer un dernier détail
 
 Crash à la seconde déconnexion
 Suite au passage à systemd, certains gestionnaires de connexion plantent lors de la deuxième déconnexion
 Pour résoudre ce problème, il suffit d'ajouter une ligne à la fin du fichier de configuration approprié.
 
+# /et	pam.d/lxdm
 Par exemple pour LXDM:
 Fichier: /etc/pam.d/lxdm
 ...
 session 	required 	pam_systemd.so
 
-puis activer lxde
-# systemctl enable lxdm
-puis
-# systemctl start lxdm
-Le gestionnaire se lance immédiatement.
 
+
+
+9 - Activer le son
+#~~~~~~~~~~~~~~~~#
+
+# yaourt -S pulseaudio-equalizer
 
 -- Fin --
