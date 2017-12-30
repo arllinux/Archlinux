@@ -252,7 +252,21 @@ Vous pouvez spécifier la locale pour la session courante (ça évitera des mess
 
 Éditez le fichier /etc/vconsole.conf afin d'y spécifier la disposition du clavier que vous souhaitez utiliser :
 
-# echo KEYMAP=fr > /etc/vconsole.conf
+# echo KEYMAP=fr-latin9 > /etc/vconsole.conf
+# echo FONT=latin9w-16 >> /etc/vconsole.conf
+
+Dans le script bash
+cat > /etc/vconsole.conf << _VCONSOLEconf_
+KEYMAP=fr-latin9
+FONT=latin9w-16
+_VCONSOLEconf_
+
+
+NetworkManager
+# pacman -S networkmanager
+# systemctl enable NetworkManager.service
+
+
 
 #########################################################
 #### Fin de l'automatisation du script 03_adjustInit ####
@@ -271,7 +285,6 @@ Définissez un mot passe pour le root :
 # passwd
 
 
-
 12 - Installation d'un bootloader
 ####~~~~~~~~~~~~~~~~~~~~~~~~~####
 
@@ -280,6 +293,9 @@ Installation
 
 Plus d'infos ici : https://wiki.archlinux.fr/GRUB
 
+############################################################
+#### Automatisé par le script 04_booloader du dépot git ####
+############################################################
 Mise en place
 Pour l'installer sur le disque /dev/sda :
 # grub-install --target=i386-pc --no-floppy --recheck /dev/sda
@@ -294,6 +310,9 @@ Found initrd images(s) in /boot: initramfs-linux.img
 Found fallback intird images(s) in /boot: initramfs-linux-fallback.img
 fait
 
+#########################################################
+#### Fin de l'automatisation du script 04_bootloader ####
+#########################################################
 
 13 - Démonter le tout
 ####~~~~~~~~~~~~~####
@@ -314,6 +333,6 @@ la commande "reboot" relancerais l'image disque.
 C'est pourquoi une fois la machine éteinte il faut éjecter l'image disque.
 
 A ce niveau nous avons un système fonctionnel.
-La suite de la procédure dans : "002_Après_le_redémarrage"
+La suite de la procédure dans : "002_PostInstall"
 
 -- Fin --
