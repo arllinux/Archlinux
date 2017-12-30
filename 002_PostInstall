@@ -27,6 +27,21 @@ Pour activer DHCP sur toutes les interfaces réseaux:
 Activer dhcp au redémarrage
 # systemctl enable dhcpcd
 
+Réglage du son
+# alsamixer
+Mettez les 2 premières colonnes au max :
+Si le pied de colonne colorée contient un "M", pressez une fois la touche "m"
+pour que "M" se transforme en "OO". Ensuite monter le son au maximum avec les
+flèches directionnelles haut et bas.
+Touche "Esc" pour quitter.
+
+Test du son
+# aplay /usr/share/sounds/alsa/*.wav
+
+Une fois le son correctement réglé :
+# alasctl store
+
+
 
 1 - Utilisateurs
 ################
