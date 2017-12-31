@@ -50,7 +50,7 @@ Activer dhcp au redémarrage
 3 - Installer le NetworkManager
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
-# pacman -S networkmanager
+# pacman -S networkmanager network-manager-applet
 # systemctl enable NetworkManager.service
 
 
