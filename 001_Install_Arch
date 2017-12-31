@@ -93,10 +93,27 @@ Pour créer le(s) dossier(s) utilisateur, il nous faut monter la partition /home
 Si vous avez un /boot séparé, il faut aussi le monter :
 # mkdir /mnt/boot && mount /dev/sda1 /mnt/boot
 
+#########################################################################
+#
+# Récupérer les scripts pour pouvoir exécuter les opérations suivantes
+# automatiquement
+#
+#########################################################################
+
+Exécuter ceci :
+# wget http://sloteur.free.fr/arlinux/scripts.tar.gz
+# tar xvzf scripts.tar.gz
+# cd scripts
+
+
 
 7 - Sélection des mirroirs pour installation  du système de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Si vous voulez lancer le script d'automatisation du point 7
+# ./01_mirroirs.sh
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
@@ -129,9 +146,10 @@ Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécess
 9 - Configuration du système
 ####~~~~~~~~~~~~~~~~~~~~####
 
-###########################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Automatisé par le script 02_genfstab du dépot git ####
-###########################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 Un fichier fstab existe dans notre /mnt/etc/fstab.
 Pour voir ce qui est inscrit dans le fichier avant de lancer
 la commande qui va configurer les points de montage, éditez le fichier :
@@ -167,9 +185,9 @@ UUID=51a3be2d-3897-4d01-864c-3463035ee25b	/boot     	ext2      	rw,relatime,bloc
 # /dev/sda2
 UUID=48641d8a-f4c8-4de3-bdc1-08371f7d15a9	none      	swap      	defaults  	0 0
 
-#######################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Fin de l'automatisation du script 02_genfstab ####
-#######################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 10 - Chrooter dans le nouveau système :
@@ -198,7 +216,9 @@ il faut installer git :
 # pacman -S git vim
 (j'ai rajouté vim puisqu'on y est :)
 
-D'abbord
+D'abbord :
+Pour accéder au répertoire /root de notre système monté dans /mnt
+# cd /root
 # git clone https://github.com/arllinux/archlinux
 
 Pour un peu plus de confort :
@@ -212,9 +232,12 @@ Pour activer la coloration :
 # cd archlinux/scripts
 4 : # ./03_adjustInit.sh
 
-#############################################################
+
+
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Automatisé par le script 03_adjustInit du dépot git ####
-#############################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Renseignez le nom de la machine dans le fichier /etc/hostname :
 # echo virtualarch > /etc/hostname
@@ -260,12 +283,13 @@ Vous pouvez spécifier la locale pour la session courante (ça évitera des mess
 
 Éditez le fichier /etc/vconsole.conf afin d'y spécifier la disposition du clavier que vous souhaitez utiliser :
 
-# echo KEYMAP=fr
+# echo KEYMAP=fr > /etc/vconsole.conf
 
-
-#########################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Fin de l'automatisation du script 03_adjustInit ####
-#########################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
 Configurez /etc/mkinitcpio.conf et créez les RAMdisks initiaux avec :
 
@@ -288,9 +312,11 @@ Pour prendre en compte le nouveau dépot pour yaourt
 
 Plus d'infos ici : https://wiki.archlinux.fr/GRUB
 
-############################################################
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Automatisé par le script 04_booloader du dépot git ####
-############################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
 Mise en place
 Pour l'installer sur le disque /dev/sda :
 # grub-install --target=i386-pc --no-floppy --recheck /dev/sda
@@ -305,14 +331,18 @@ Found initrd images(s) in /boot: initramfs-linux.img
 Found fallback intird images(s) in /boot: initramfs-linux-fallback.img
 fait
 
-#########################################################
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Fin de l'automatisation du script 04_bootloader ####
-#########################################################
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 
 13 - Démonter le tout
 ####~~~~~~~~~~~~~####
 
 Sortez de l'environnement chroot (exit ou Ctrl+D), puis :
+# exit ou (Ctrl + d)
 
 Attention à sortir de /mnt si vous êtes dedans sinon la commande retourne :
 (umount: /mnt: target is busy)

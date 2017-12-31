@@ -99,6 +99,11 @@ Entrer un nombre (par défaut, 1 est séléctionné) :
 Utilisateurs
 #==========#
 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+### Début de la partie automatisée par le script 05_create_users du dépot git
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
 Vous pouvez ajouter un utilisateur à l'aide de la commande useradd :
 
 # useradd -g users -G users -m jpantinoux
@@ -177,7 +182,7 @@ fi
 #xterm -geometry 80x50+494+51 &
 #xterm -geometry 80x20+494-0 &
 #exec xterm -geometry 80x66+0+0 -name login
-exec startxfce4-session
+exec xfce4-session
 (Fin de Fichier: ~/.xinitrc)
 
 
@@ -225,7 +230,7 @@ Crash à la seconde déconnexion
 Suite au passage à systemd, certains gestionnaires de connexion plantent lors de la deuxième déconnexion
 Pour résoudre ce problème, il suffit d'ajouter une ligne à la fin du fichier de configuration approprié.
 
-# /et	pam.d/lxdm
+# /etc/pam.d/lxdm
 Par exemple pour LXDM:
 Fichier: /etc/pam.d/lxdm
 ...
@@ -238,5 +243,7 @@ session 	required 	pam_systemd.so
 #~~~~~~~~~~~~~~~~#
 
 # yaourt -S pulseaudio-equalizer
+
+Pour activer l'applet il faut redémarrer la session
 
 -- Fin --
