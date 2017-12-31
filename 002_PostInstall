@@ -186,12 +186,6 @@ exec xfce4-session
 (Fin de Fichier: ~/.xinitrc)
 
 
-Se connecter en utilisteur normal
-# su jpantinoux
-# startxfce4
-Ok
-Se déconnecter
-
 3 - Gestionnaire de connexions
 Installer lxdm
 # pacman -S lxdm
