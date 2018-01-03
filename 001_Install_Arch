@@ -224,7 +224,7 @@ Pour accéder au répertoire /root de notre système monté dans /mnt
 Pour un peu plus de confort :
 1 : # cd archlinux/scripts
 2 : # ./000_config_git.sh
-3 : # ./param.consoles.sh
+3 : # ./02_param.consoles.sh
 Après l'exécution de param.consoles.sh, taper la commande "cd"
 pour revenir dans le répertoire de root.
 Pour activer la coloration :
