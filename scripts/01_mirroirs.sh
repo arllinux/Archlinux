@@ -10,7 +10,7 @@ cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 # Décommenter TOUS les miroirs dans mirrorlist.backup.
 # Pour se faire, sed s'avère très utile.
 sed -s 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup
-echo ":: Copie du fichier mirrorlist éffectuée ::"
+echo ":: Copie du fichier mirrorlist vers mirrorlist.backup éffectuée ::"
 echo ":: Fichier mirrorlist.backup décommenté ::"
 
 # Rankmirrors trouve les 10 meilleurs miroirs
