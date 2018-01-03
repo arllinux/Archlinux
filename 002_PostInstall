@@ -144,7 +144,7 @@ On a bien tous nos groupes y compris le groupe que l'on à créé précédemmant
 7 - Installer l'environement de bureau xfce4
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 Installer Xfce
-# yaourt -S xfce4 xfce4-goodies gvfs xdg-user-dirs
+# yaourt -S xfce4 xfce4-goodies gvfs gvfs-smb  xdg-user-dirs
 
 "Tester en tant que root"
 Tester en lancant xorg en tant que "root" :

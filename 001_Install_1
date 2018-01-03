@@ -1,0 +1,40 @@
+#!/bin/bash
+
+
+# Pour le choix du système de fichier sur les partition
+
+echo ':: Le choix du système de fichier va vous être demandé dans 10 s ::'
+sleep 10
+read -p ':: Quel type de système de fichier pour /boot ? : ext2 ou ext4 :' boot
+read -p ':: Quel type de système de fichier pour / ? : ext2 ou ext4 ::' racine
+read -p ':: Quel type de système de fichier pour /Home ? : ext2 ou ext4 ::' home
+
+mkfs.$boot /dev/sda1
+mkfs.$racine /dev/sda3
+mkfs.$home /dev/sda4
+
+# La swap est créée en utilisant mkswap : 
+mkswap /dev/sda2
+
+echo ':: Les 4 partitions sont crées ::'
+echo ':: /dev/sda1 (/boot) est formaté en : '$boot
+echo ':: /dev/sda2 (swap) est formaté en : swap'
+echo ':: /dev/sda3 (/) est formaté en : '$racine
+echo ':: /dev/sda4 (/home) est formaté en : '$home
+echo '::::::::::::::::::::::::::::::::::::::::::::'
+echo '::::::::::::::::::::::::::::::::::::::::::::'
+sleep 3
+
+# Montage des partitions
+echo ':: Montage des partitions ::'
+sleep 3
+mount /dev/sda3 /mnt
+swapon /dev/sda2
+mkdir /mnt/home && mount /dev/sda4 /mnt/home
+mkdir /mnt/boot && mount /dev/sda1 /mnt/boot
+echo ':: Les 4 partitions sont montées ::'
+echo ':::::::::::::::::::::::::::::::::::'
+echo ':::::::::::::::::::::::::::::::::::'
+
+
+
