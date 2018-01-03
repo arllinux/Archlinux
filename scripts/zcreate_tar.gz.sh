@@ -5,10 +5,11 @@
 # Jean-Pierre Antinoux - Décembre 2017
 
 CWD=$(pwd)
+# Vider le dossier zcompress
+rm -rf $CWD/zcompress/*
 
 # Copier les 2 fichiers dans zcompress.
-cp $CWD/01_mirroirs.sh $CWD/zcompress
-cp $CWD/02_genfstab.sh $CWD/zcompress
+cp $CWD/*.sh $CWD/zcompress
 
 # Compresser les 2 fichiers
 tar zcvf $CWD/zcompress/scripts.tar.gz zcompress/
