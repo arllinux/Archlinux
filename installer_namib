@@ -1,0 +1,56 @@
+Installation de Namib :
+2 janvier 2018
+
+Le live se lance rapidement
+
+1 - Le bureau se met en 4 images d'écran pendant 5 seconde puis s'affiche correstement.
+
+2 - Installateur comme sous Mint : il demande de créer en plus un mot de passe administrateur. Bon point.
+
+3 - Dans le pacman.conf le dépôt namib se trouve en dernier. Bon point.
+
+4 - Lors de l'installation, l'installeur se bloque à 90 %.
+En fait il ne se bloque pas mais reste au même point pendant l'installation des "gros" logiciels.
+Il faut patienter environ 10 à 15 mn, puis il termine rapidement.
+Peut faire penser que l'installeur est bloqué.
+
+5 - Premier lancement du bureau : conso Ram 413Mo
+
+6 - 600 Mo de mise à jour à faire
+
+
+
+Paramétrages bureau :
+
+Ajout par pamac (équivalent de synaptic):
+elementary-icon-themes
+Thème : BlueMenta
+Icones : elementary
+
+Firefox : ublock par défaut
+
+Comment enlever l'icone "Poste de travail" du Bureau ?
+= avec l'ajout de Dconf-editor
+
+
+Points forts :
+Burau Mate "pur"
+Un gestionnaire de paquets graphique (pamac) plus intuitif que synaptic.
+
+ Archlinux/001_Install_1 
+
+
+Point faibles :
+vlc ?? Installer vlc-git en provenance des dépots AUR : cette opération remplace vlc 2.2 par vlc 3.0.
+Compilation très longue mais ça marche
+
+Menu Applications :
+Brisk par défaut : à tendance à disparaitre lorsque l'on utilise "Éditer les menus"
+Remplacé par le menu : Barre de menu traditionnel de Mate (3 menus)
+
+
+
+
+
+
+
