@@ -1,8 +1,5 @@
 # Au lancement on arrive sur un teminal qui est auto connecté.
 
-Note : j'utilise l'éditeur de texte vi, mais si vous avez
-l'habitude de nano il est installé aussi.
-
 
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 L'invite se présente sous cette forme :
@@ -11,23 +8,10 @@ Il n'y a pas les crochets qui encadre l'invite [ ]
 Ceci indique que l'on travaille à partir du CD ou de la clé
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
-
-1 - Disposition du clavier :
-####~~~~~~~~~~~~~~~~~~~~####
-Pour changer l'agencement du clavier, utilisez la commande loadkeys (le clavier
-par défaut étant le clavier QWERTY, il faut taper "loqdkeys fr)pc" sur un clavier
-AZERTY pour écrire loadkeys fr-pc).
-
 # loadkeys fr-pc
-
-
-2 - Connexion au réseau
-####~~~~~~~~~~~~~~~####
 
 # ip address show
 
-Doit retourner une adresse du type : "enp0s3"
-inet 192.168.2.2
 
 Autrement, il vous faut configurer votre réseau en vous assurant d'abord
 d'avoir arrêté le service dhcpcd : 
