@@ -1,5 +1,8 @@
+#########  Installation d'une Archlinux  #####################
+#
 # Au lancement on arrive sur un teminal qui est auto connecté.
-
+#
+##############################################################
 
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 L'invite se présente sous cette forme :
@@ -12,31 +15,20 @@ Ceci indique que l'on travaille à partir du CD ou de la clé
 
 # ip address show
 
-
-Autrement, il vous faut configurer votre réseau en vous assurant d'abord
-d'avoir arrêté le service dhcpcd : 
-# systemctl stop dhcpcd.service
+Optionnel
+Si le réseau ne fonctionne pas :
 # dhcpcd enpS03
+Puis
+# systemctl stop dhcpcd.service
 
-
-3 - Mise à jour de l'heure système
-####~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
 # timedatectl
-System clock synchronized: no
-systemd-timesyncd.service active: no
-RTV in local TZ: no
-
-Il se peut que l'horloge nécessite d'être réglée. 
 # timedatectl set-ntp true
-System clock synchronized: yes
-systemd-timesyncd.service active: yes
-RTV in local TZ: no
+
 
 
 4 - Partitionnement des disques
 ####~~~~~~~~~~~~~~~~~~~~~~~####
-Table de partitions "MS-DOS (MBR)"
 Dans cet exemple le disque virtuel fait 21G
 
 # cfdisk
@@ -48,26 +40,24 @@ Select label type
 # /dev/sda3 pour le /				8G
 # /dev/sda4 pour le /home		Le reste du disque
 
+
+
 =========================================================================
 Ici on peut utiliser un script qui est à récupérer à l'adresse suivante :
-wget http://sloteur.free.fr/arllinux/scripts.tar.gz
-=========================================================================
+# wget http://sloteur.free.fr/arllinux/scripts.tar.gz
 
 # tar xvzf scripts.tar.gz
 # cd scripts
 
-Ici on a le choix entre exécuter les scripts 1 à 1 pour vérifer
-et apprendre, comme ceci :
 # 00_partitionnement.sh
 # 01_mirroirs.sh
+# pacstrap /mnt base base-devel
 # 02_genfstab.sh
 
-Soit on lance les 3 commandes en même temps comme ceci :
-# 000_all_scripts.sh
 
-
-
-
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Si l'on a pas exécuté le script : "00_formatage.sh"
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 5 - Formatage des partitions
 ####~~~~~~~~~~~~~~~~~~~~####
 
@@ -96,27 +86,14 @@ Pour créer le(s) dossier(s) utilisateur, il nous faut monter la partition /home
 Si vous avez un /boot séparé, il faut aussi le monter :
 # mkdir /mnt/boot && mount /dev/sda1 /mnt/boot
 
-#########################################################################
-#
-# Récupérer les scripts pour pouvoir exécuter les opérations suivantes
-# automatiquement
-#
-#########################################################################
-
-Exécuter ceci :
-# wget http://sloteur.free.fr/arlinux/scripts.tar.gz
-# tar xvzf scripts.tar.gz
-# cd scripts
-
 
 
 7 - Sélection des mirroirs pour installation  du système de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Si vous voulez lancer le script d'automatisation du point 7
-# ./01_mirroirs.sh
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Si l'on a pas exécuté le script : "01_mirroirs.sh"
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
@@ -137,8 +114,6 @@ L'attente peut durer jusqu'a 5 minutes ou plus. Gardez votre calme...
 
 8 - Installation des paquets de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
-Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécessaire à l'utilisation de AUR :
-(Arch User Repository est un dépôt communautaire auquel tous les utilisateurs d'Arch peuvent participer.)
 
 # pacstrap /mnt base base-devel
 
@@ -153,44 +128,11 @@ Vous pouvez par exemple en profiter pour installer le groupe base-devel, nécess
 #### Automatisé par le script 02_genfstab du dépot git ####
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Un fichier fstab existe dans notre /mnt/etc/fstab.
-Pour voir ce qui est inscrit dans le fichier avant de lancer
-la commande qui va configurer les points de montage, éditez le fichier :
-# vi /mnt/etc/fstab
-
-Le fichier ne contient que l'entête :
-# Static information about the filesystems.
-# See fstab(5) for details.
-#
-# <file system>	<dir>	<type> <options>	<dump>	<pass>
 
 Générer le /mnt/etc/fstab
 
 # genfstab -U -p /mnt >> /mnt/etc/fstab
 
-On réédite le fichier nouvellement créé pour voir si tout est correct :
-# vi /mnt/etc/fstab
-
-Le fichier contient maintenant la configuration des partitions :
-# Static information about the filesystems.
-# See fstab(5) for details.
-
-# <file system> <dir> <type> <options> <dump> <pass>
-# /dev/sda3
-UUID=a23dfd1a-39e5-400f-ba57-c446ca606991	/         	ext4      	rw,relatime,data=ordered	0 1
-
-# /dev/sda4
-UUID=6e7efd15-ad90-4d5a-b280-26b24f6e9e79	/home     	ext4      	rw,relatime,data=ordered	0 2
-
-# /dev/sda1
-UUID=51a3be2d-3897-4d01-864c-3463035ee25b	/boot     	ext2      	rw,relatime,block_validity,barrier,user_xattr,acl	0 2
-
-# /dev/sda2
-UUID=48641d8a-f4c8-4de3-bdc1-08371f7d15a9	none      	swap      	defaults  	0 0
-
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-#### Fin de l'automatisation du script 02_genfstab ####
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
 
 10 - Chrooter dans le nouveau système :
@@ -219,7 +161,7 @@ il faut installer git :
 # pacman -S git vim
 (j'ai rajouté vim puisqu'on y est :)
 
-D'abbord :
+D'abord :
 Pour accéder au répertoire /root de notre système monté dans /mnt
 # cd /root
 # git clone https://github.com/arllinux/archlinux
@@ -242,49 +184,31 @@ Pour activer la coloration :
 #### Automatisé par le script 03_adjustInit du dépot git ####
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Renseignez le nom de la machine dans le fichier /etc/hostname :
 # echo virtualarch > /etc/hostname
-
-Renseignez le nom de la machine dans le fichier /etc/hosts :
 
 # echo '127.0.1.1 virtualarch.virtualbox virtualarch' >> /etc/hosts
 
-Créez un lien symbolique /etc/localtime afin de choisir votre fuseau horaire, par exemple pour la France :
-
-# ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
-Note : la commande m'a retourné :
-"ln: failed to créate symbolic link '/etc/localtime' : File exists"
-
-J'ai donc éliminé le fichier "/etc/localtime"
 # rm /etc/localtime
-puis j'ai renouvelé la commande :
+
 # ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
-Confirmation : 
+
 # readlink -f /etc/localtime
 /usr/share/zoneinfo/Europe/Paris
 
-Lien vers la solution :
-https://bbs.archlinux.org/viewtopic.php?id=222908
-
-Éditez le fichier /etc/locale.gen et décommentez votre locale,
 # vi /etc/locale.gen
 fr-FR.URF-8 UTF-8
 
-puis exécutez la commande suivante :
 # locale-gen
 Generating locales...
 	fr-FR.UTF-8... done
 Generation complete.
 
-Ajoutez le nom de la locale au fichier /etc/locale.conf (voir locale), par exemple pour le français en UTF-8 :
 
 # echo LANG="fr_FR.UTF-8" > /etc/locale.conf
 
-Vous pouvez spécifier la locale pour la session courante (ça évitera des messages d'alerte par la suite) avec la commande :
 
 # export LANG=fr_FR.UTF-8
 
-Éditez le fichier /etc/vconsole.conf afin d'y spécifier la disposition du clavier que vous souhaitez utiliser :
 
 # echo KEYMAP=fr > /etc/vconsole.conf
 
@@ -313,20 +237,15 @@ Pour prendre en compte le nouveau dépot pour yaourt
 # pacman -Sy
 # pacman -S grub
 
-Plus d'infos ici : https://wiki.archlinux.fr/GRUB
-
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Automatisé par le script 04_booloader du dépot git ####
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-Mise en place
-Pour l'installer sur le disque /dev/sda :
 # grub-install --target=i386-pc --no-floppy --recheck /dev/sda
 Installation pour la plate-forme i386-pc.
 Installation terminée, sans erreur.
 
-Générer le fichier de configuration principal
 # grub-mkconfig -o /boot/grub/grub.cfg
 Création du fichier de configutation GRUB
 Image Linux trouvée : /boot/vmlinuz-linux
@@ -344,7 +263,6 @@ fait
 13 - Démonter le tout
 ####~~~~~~~~~~~~~####
 
-Sortez de l'environnement chroot (exit ou Ctrl+D), puis :
 # exit ou (Ctrl + d)
 
 Attention à sortir de /mnt si vous êtes dedans sinon la commande retourne :
