@@ -249,9 +249,9 @@ Ajouter le gestionnairer graphique de gestion des paquets
 en root :
 - $ visudo
 créer une ligne
-jpantinoux ALL=(ALL:ALL) ALL
+jpantinoux all=(all:all) all
 puis en utilisateur :
-$ yaourt -S pamac-aur
+$ yaourt -s pamac-aur
 
 Patience
 

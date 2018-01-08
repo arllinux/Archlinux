@@ -49,6 +49,8 @@ Ici on peut utiliser un script qui est à récupérer à l'adresse suivante :
 # tar xvzf scripts.tar.gz
 # cd scripts
 
+# 000_all_scripts.sh
+ou les 4 lignes suivantes
 # 00_partitionnement.sh
 # 01_mirroirs.sh
 # pacstrap /mnt base base-devel
