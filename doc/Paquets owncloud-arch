@@ -1,0 +1,12 @@
+owncloud sous archlinux
+
+Paquet apache 		installé
+
+Paquets :
+mariadb				Ajouté
+mariadb-client		Ajouté
+libmariadbclient 	installé
+
+Paquet :
+php					installé
+
