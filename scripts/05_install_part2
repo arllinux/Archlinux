@@ -17,27 +17,25 @@ if [ $USER != "root" ]
     read nom
     	done
 
-    ifconfig
-    ip address show
-    
     dhcpcd enp0s
-    
+    sleep 5 
     systemctl start dhcpcd
-    
+    sleep 2 
     systemctl enable dhcpcd
-    
+    sleep 3
+
     pacman -Syu
-    
+    sleep 2 
     pacman -S networkmanager network-manager-applet
     systemctl enable NetworkManager.service
     systemctl start NetworkManager.service
-    
+    sleep 2 
     pacman -S yaourt
-    
+    sleep 2 
     yaourt -S alsa-utils alsa-oss pulseaudio-equalizer
-    
+    sleep 2 
     yaourt -S xorg-server xorg-xinit
-
+    sleep 2
     # Création du nom et avec le groupe users
     echo ":: Création du nom ::"
 		useradd -g users -G users -m $nom
@@ -53,18 +51,20 @@ if [ $USER != "root" ]
 		# Affichag des groupes créés
 		echo ":: Liste des groupes de $nom ::"
 		groups $nom
-
+    sleep 2
     yaourt -S mate mate-extra gvfs gvfs-smb xdg-user-dirs
-    
+    sleep 2 
     cp $CWD../xinit/xinitrc-mate /home/$nom/.xinitrc
-    
+    sleep 2 
 		pacman -S lxdm
-   
+    sleep 2 
 		cp $CWD../pam/lxdm /etc/pam.d/lxdm
-    
+    sleep 2   
 		alsamixer
     aplay /usr/share/sounds/alsa/*.wav
+		sleep 2
     alasctl store
+		sleep 2
     systemctl start lxdm
 fi
 
