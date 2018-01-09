@@ -1,0 +1,71 @@
+#!/bin/bash
+#
+# 07_install_part2.sh
+# 
+# Jean-Pierre Antinoux - janvier 2018
+
+CWD=$(pwd)
+# Vérification de la syntaxe de l'utilisateur principal
+if [ $USER != "root" ]
+    then
+        echo "Pour exécuter ce script il faut être l'utilisateur root !"
+    else
+    # Création d'un utilisateur
+    read -p 'Utilisateur (login) à créer : ' nom
+    while [ -z $nom ]; do
+    echo "Veuillez saisir votre nom"
+    read nom
+    	done
+
+    ifconfig
+    ip address show
+    
+    dhcpcd enp0s
+    
+    systemctl start dhcpcd
+    
+    systemctl enable dhcpcd
+    
+    pacman -Syu
+    
+    pacman -S networkmanager network-manager-applet
+    systemctl enable NetworkManager.service
+    systemctl start NetworkManager.service
+    
+    pacman -S yaourt
+    
+    yaourt -S alsa-utils alsa-oss pulseaudio-equalizer
+    
+    yaourt -S xorg-server xorg-xinit
+
+    # Création du nom et avec le groupe users
+    echo ":: Création du nom ::"
+		useradd -g users -G users -m $nom
+   
+		# Création du mot de passe
+		echo ":: Création du mot de passe ::"
+		passwd $nom
+
+		# Ajouter les groupes courant
+		echo ":: Ajout de groupes courant ::"
+		usermod -aG audio,log,lp,optical,scanner,storage,video $nom
+    
+		# Affichag des groupes créés
+		echo ":: Liste des groupes de $nom ::"
+		groups $nom
+
+    yaourt -S mate mate-extra gvfs gvfs-smb xdg-user-dirs
+    
+    cp $CWD../xinit/xinitrc-mate /home/$nom/.xinitrc
+    
+		pacman -S lxdm
+   
+		cp $CWD../pam/lxdm /etc/pam.d/lxdm
+    
+		alsamixer
+    aplay /usr/share/sounds/alsa/*.wav
+    alasctl store
+    systemctl start lxdm
+fi
+
+exit 0
