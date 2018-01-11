@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# 01_mirroirs
+# 03-adjustInit.sh 
 
 # Jean-Pierre Antinoux - Décembre 2017
 
@@ -48,19 +48,24 @@ read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 			rm /etc/localtime
 			ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 		else
-			echo ":: Le fuseau horaire doit être configuré manuellement, désolé...
-			::"
+			echo "======================================================================="
+			echo ":: Le fuseau horaire doit être configuré manuellement, désolé... ::"
+			echo "======================================================================="
 		fi
 # Ajout du NetworkNanager
-#read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
-#	if [ $nm = "o" ]
-#		then
-#			pacman -S networkmanager
-#			systemctl enable NetworkManager.service
-#	   	echo ":: Le NetworkNanager est en route ::"
-#		else
-#		  echo ":: Vous avez choisi de ne pas installeir le NetworkNanager ::"
-#	fi
+read -p 'Mettre en place le NetworkManager ? (o/n) : ' nm
+	if [ $nm = "o" ]
+		then
+			pacman -S networkmanager
+			systemctl enable NetworkManager.service
+			echo "===================================="
+	   	echo ":: Le NetworkNanager est en route ::"
+			echo "===================================="
+		else
+			echo "============================================================"
+		  echo ":: Vous avez choisi de ne pas installer le NetworkNanager ::"
+			echo "============================================================"
+	fi
 
 exit 0
 
