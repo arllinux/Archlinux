@@ -126,7 +126,7 @@ Exécuter ceci :
 
 
 
-7 - Sélection des mirroirs pour installation  du système de base
+7 - Sélection des miroirs pour installation  du système de base
 ####~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~####
 
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -138,7 +138,7 @@ Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
 # cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
-Editons maintenant le fichier backup.
+Éditons maintenant le fichier backup.
 Nous allons décommenter TOUS les miroirs afin que rankmirrors puisse les tester.
 Pour se faire, sed s'avère très utile.
 # sed -s 's/^#Server/Server/' /etc/pacman.d/mirrorlist.backup
@@ -147,7 +147,7 @@ Pour finir, nous allons laisser rankmirrors trouver les 10 meilleurs miroirs
 et écrire le résultat directement dans /etc/pacman.d/mirrorlist
 # rankmirrors -n 10 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
 
-L'attente peut durer jusqu'a 5 minutes ou plus. Gardez votre calme...
+L'attente peut durer jusqu'à 5 minutes ou plus. Gardez votre calme...
 
 
 
@@ -235,7 +235,7 @@ il faut installer git :
 # pacman -S git vim
 (j'ai rajouté vim puisqu'on y est :)
 
-D'abbord :
+D'abord :
 Pour accéder au répertoire /root de notre système monté dans /mnt
 # cd /root
 # git clone https://github.com/arllinux/archlinux
@@ -344,7 +344,7 @@ Installation terminée, sans erreur.
 
 Générer le fichier de configuration principal
 # grub-mkconfig -o /boot/grub/grub.cfg
-Création du fichier de configutation GRUB
+Création du fichier de configuration GRUB
 Image Linux trouvée : /boot/vmlinuz-linux
 Found initrd images(s) in /boot: initramfs-linux.img
 Found fallback intird images(s) in /boot: initramfs-linux-fallback.img
