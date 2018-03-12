@@ -2,30 +2,30 @@
 
 # 03-adjustInit.sh 
 
-# Jean-Pierre Antinoux - DÃ©cembre 2017
+# Jean-Pierre Antinoux - Décembre 2017
 
 # Renseigner un nom pour la machine
 read -p 'Nom de la machine : (ex : poste1 ou gaston) : ' namecomputer
 
 # Renseigner un nom pour le rÃ©sau
-read -p 'Nom du rÃ©seau local : (ex : monreseau ou maison) : ' namereseau
+read -p 'Nom du réseau local : (ex : monreseau ou maison) : ' namereseau
 
 # Inscrire le nom de la machine dans le fichier hostname
 echo $namecomputer > /etc/hostname
 
-# Inscrire le nom de la machine et du rÃ©seau dans le fichier hosts
+# Inscrire le nom de la machine et du réseau dans le fichier hosts
 echo 127.0.1.1 $namecomputer.$namereseau $namecomputer >> /etc/hosts
 
-# DÃ©commenter la locale "fr_FR.UTF-8 UTF-8" dans le fichier locale.gen
+# Décommenter la locale "fr_FR.UTF-8 UTF-8" dans le fichier locale.gen
 sed -i -e "s/\#fr\_FR.UTF\-8\ UTF\-8/ fr\_FR.UTF\-8\ UTF\-8/g" /etc/locale.gen
 
-# ExÃ©cuter la commande locale-gen				
+# Exécuter la commande locale-gen				
 locale-gen
 
 # Inscrire la locale "fr_FR.UTF-8" dans le fichier locale.conf
 echo LANG="fr_FR.UTF-8" > /etc/locale.conf
 
-# Pour Ã©viter le messages d'erreur dans la session courante
+# Pour éviter le messages d'erreur dans la session courante
 export LANG=fr_FR.UTF-8
 
 # Indiquez la disposition du clavier dans le fichier vconsole.conf
@@ -49,7 +49,7 @@ read -p 'Fuseau horaire : Europe/Paris ? (o/n) : ' fuseau
 			ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 		else
 			echo "======================================================================="
-			echo ":: Le fuseau horaire doit Ãªtre configurÃ© manuellement, dÃ©solÃ©... ::"
+			echo ":: Le fuseau horaire doit être configuré manuellement, désolé... ::"
 			echo "======================================================================="
 		fi
 # Ajout du NetworkNanager

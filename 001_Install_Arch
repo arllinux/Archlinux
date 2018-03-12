@@ -304,6 +304,18 @@ Vous pouvez spécifier la locale pour la session courante (ça évitera des mess
 
 # echo KEYMAP=fr > /etc/vconsole.conf
 
+Ajout du dépot pour yaourt
+
+cp /etc/pacman.conf /etc/pacman.conf.backup
+cat >> /etc/pacman.conf << _PACMANconf_
+
+[archlinuxfr]
+SigLevel = Optional TrustAll
+Server = http://repo.archlinux.fr/x86_64
+
+_PACMANconf_
+
+
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 #### Fin de l'automatisation du script 03_adjustInit ####
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
