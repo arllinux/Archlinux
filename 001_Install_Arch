@@ -284,7 +284,7 @@ https://bbs.archlinux.org/viewtopic.php?id=222908
 
 Éditez le fichier /etc/locale.gen et décommentez votre locale,
 # vi /etc/locale.gen
-fr-FR.URF-8 UTF-8
+fr-FR.UTF-8 UTF-8
 
 puis exécutez la commande suivante :
 # locale-gen
