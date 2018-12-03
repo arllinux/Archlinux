@@ -332,6 +332,9 @@ Définissez un mot passe pour le root :
 				 
 # passwd
 
+Activer le dhcp
+# systemctl enable dhcpcd
+
 
 12 - Installation d'un bootloader
 ####~~~~~~~~~~~~~~~~~~~~~~~~~####

@@ -40,12 +40,12 @@ if [ $USER != "root" ]
     pacman -S networkmanager network-manager-applet
     systemctl enable NetworkManager.service
     systemctl start NetworkManager.service
+    # sleep 2 
+    # pacman -S yaourt
     sleep 2 
-    pacman -S yaourt
+    pacman -S alsa-utils alsa-oss pulseaudio-equalizer
     sleep 2 
-    yaourt -S alsa-utils alsa-oss pulseaudio-equalizer
-    sleep 2 
-    yaourt -S xorg-server xorg-xinit
+    pacman -S xorg-server xorg-xinit
     sleep 2
     # Création du nom et avec le groupe users
     echo ":: Création du nom ::"
@@ -63,7 +63,7 @@ if [ $USER != "root" ]
 		echo ":: Liste des groupes de $nom ::"
 		groups $nom
     sleep 2
-    yaourt -S mate mate-extra gvfs gvfs-smb xdg-user-dirs
+    pacman -S mate mate-extra gvfs gvfs-smb xdg-user-dirs
     sleep 2 
     cp $CWD/../xinit/xinitrc-mate /home/$nom/.xinitrc
     sleep 2 
