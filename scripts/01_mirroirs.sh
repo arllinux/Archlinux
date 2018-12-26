@@ -1,4 +1,4 @@
-#!/bin/bash
+e!:bin/bash
 
 # 01_mirroirs
 
@@ -9,7 +9,7 @@
 
 # Faire une copie du ficher mirrorlist.
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
-
+pacman -Sy reflector
 # Cette commande va trier les 5 miroirs http les plus récemment synchronisés en
 # France puis les trier par vitesse et enfin sauvegarder le résultat dans
 # /etc/pacman.d/mirrorlist : 

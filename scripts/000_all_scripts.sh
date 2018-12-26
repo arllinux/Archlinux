@@ -40,6 +40,7 @@ echo ':: Les 4 partitions sont montées ::'
 echo '==================================================='
 echo '= Système de fichiers créés et partitions montées ='
 echo '==================================================='
+lsblk
 
 # Faire une copie du ficher mirrorlist.
 cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
