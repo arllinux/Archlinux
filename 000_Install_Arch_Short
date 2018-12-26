@@ -101,6 +101,9 @@ Sélection du miroir
 Commençons par créer un fichier de backup de /usr/bin/rankmirrors :
 # cp /etc/pacman.d/mirrorlist /etc/pacman.d/mirrorlist.backup
 
+
+Partie obsolète
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 Editons maintenant le fichier backup.
 Nous allons décommenter TOUS les miroirs afin que rankmirrors puisse les tester.
 Pour se faire, sed s'avère très utile.
@@ -109,6 +112,13 @@ Pour se faire, sed s'avère très utile.
 Pour finir, nous allons laisser rankmirrors trouver les 10 meilleurs miroirs
 et écrire le résultat directement dans /etc/pacman.d/mirrorlist
 # rankmirrors -n 10 /etc/pacman.d/mirrorlist.backup > /etc/pacman.d/mirrorlist
+Cette commande va trier les 5 miroirs http les plus récemment synchronisés en France
+puis les trier par vitesse et enfin sauvegarder le résultat dans /etc/pacman.d/mirrorlist : 
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Fin partie obsolète.
+
+Réflector remplace rankmirrors
+# reflector --verbose --country 'France' -l 5 -p http --sort rate --save /etc/pacman.d/mirrorlist
 
 L'attente peut durer jusqu'a 5 minutes ou plus. Gardez votre calme...
 
